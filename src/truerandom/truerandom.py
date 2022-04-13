@@ -6,7 +6,7 @@ from typing import Any
 import quantumrandom as qtr
 
 GENERATOR = qtr.cached_generator()
-CSV_SEPARATOR = "|"
+CSV_QUOTE_SEPARATOR = "|"
 
 
 def true_randint(
@@ -64,7 +64,7 @@ def true_password(
         int(has_punctuation) + int(has_uppercase_letters) + int(has_digits))
 
     punctuation = [
-        punc for punc in string.punctuation if punc != CSV_SEPARATOR]
+        punc for punc in string.punctuation if punc != CSV_QUOTE_SEPARATOR]
 
     if has_punctuation:
         for _ in range(true_randint(1, max_part_length)):

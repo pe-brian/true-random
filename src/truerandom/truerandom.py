@@ -1,9 +1,12 @@
 from typing import List, Tuple
 import string
+import csv
 from typing import Any
+
 import quantumrandom as qtr
 
 GENERATOR = qtr.cached_generator()
+CSV_SEPARATOR = "|"
 
 
 def true_randint(
@@ -29,7 +32,7 @@ def true_shuffle(
     x: List
 ) -> None:
     """
-        Shuffle list <x> in place, and return None.
+        Shuffles list <x> in place, and returns None.
     """
     for i in reversed(range(1, len(x))):
         j = true_randint(0, i + 1)
@@ -60,9 +63,12 @@ def true_password(
     max_part_length = (length - 1) // (
         int(has_punctuation) + int(has_uppercase_letters) + int(has_digits))
 
+    punctuation = [
+        punc for punc in string.punctuation if punc != CSV_SEPARATOR]
+
     if has_punctuation:
         for _ in range(true_randint(1, max_part_length)):
-            password += true_choice(string.punctuation)
+            password += true_choice(punctuation)
             length -= 1
 
     if has_uppercase_letters:
@@ -84,5 +90,32 @@ def true_password(
     return "".join(password)
 
 
+def true_passwords(
+    nb: int,
+    csv_output: str,
+    length: int = 10,
+    has_punctuation: bool = True,
+    has_uppercase_letters: bool = True,
+    has_digits: bool = True,
+) -> None:
+    """
+        Generate a csv file containing <nb> true passwords
+    """
+    with open(csv_output, 'w', newline='', encoding='utf8') as csvfile:
+        writer = csv.writer(
+            csvfile,
+            delimiter=' ',
+            quotechar='|',
+            quoting=csv.QUOTE_MINIMAL
+        )
+        for _ in range(nb):
+            writer.writerow(
+                [
+                    true_password(
+                        length, has_punctuation,
+                        has_uppercase_letters, has_digits
+                    )])
+
+
 if __name__ == "__main__":
-    print(true_password(length=12))
+    print(true_passwords(100, csv_output="output.csv", length=12))

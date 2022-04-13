@@ -14,4 +14,10 @@
 from truerandom import true_password
 
 print(true_password(length=10))
+
+>>> Jjr1i[h*vtsq
+```
+
+```
+python -m truerandom --output=output.csv --length=10 --nb=100
 ```

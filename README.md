@@ -9,15 +9,16 @@
 - true_shuffle
 - true_password
 
-## Example usage :
+## Generate a strong password :
 ```python
 from truerandom import true_password
 
-print(true_password(length=10))
-
->>> Jjr1i[h*vtsq
+print(true_password(length=12))
 ```
+`output : Jjr1i[h*vtsq`
+
+## Generate a CSV file of strong passwords :
 
 ```
-python -m truerandom --output=output.csv --length=10 --nb=100
+python -m truerandom --csv=output.csv --length=12 --nb=100
 ```

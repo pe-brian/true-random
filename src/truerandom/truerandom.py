@@ -38,47 +38,42 @@ def true_shuffle(
 
 def true_password(
     length: int = 10,
-    min_nb_of_pct_characters: int = 1,
-    min_nb_of_upc_letters: int = 1,
-    min_nb_of_digits: int = 1
+    has_punctuation: bool = True,
+    has_uppercase_letters: bool = True,
+    has_digits: bool = True
 ) -> str:
     """
-        Generates a trully random password composed of
-        <length> character including at least:
-        - <min_nb_of_pct_characters punctionation> characters
-        - <min_nb_of_upc_letters> characters
-        - <min_nb_of_digits> characters
+        Generates a true random password composed of
+        <length> character(s) composed of eventually:
+        - punctuations
+        - uppercase letters
+        - digits
+        - lowercase letters
     """
+
+    if length < 8:
+        raise Exception(
+            "Password length must be greater or equal than 8 characters")
 
     password = ""
 
-    assert min_nb_of_pct_characters + min_nb_of_upc_letters \
-        + min_nb_of_digits < length
-    max_part_length = (length - 1) // 3
+    max_part_length = (length - 1) // (
+        int(has_punctuation) + int(has_uppercase_letters) + int(has_digits))
 
-    for _ in range(
-            int(
-                true_randint(
-                    min_nb_of_pct_characters,
-                    max_part_length + min_nb_of_pct_characters))):
-        password += true_choice(string.punctuation)
-        length -= 1
+    if has_punctuation:
+        for _ in range(true_randint(1, max_part_length)):
+            password += true_choice(string.punctuation)
+            length -= 1
 
-    for _ in range(
-            int(
-                true_randint(
-                    min_nb_of_upc_letters,
-                    max_part_length + min_nb_of_upc_letters))):
-        password += true_choice(string.ascii_uppercase)
-        length -= 1
+    if has_uppercase_letters:
+        for _ in range(true_randint(1, max_part_length)):
+            password += true_choice(string.ascii_uppercase)
+            length -= 1
 
-    for _ in range(
-            int(
-                true_randint(
-                    min_nb_of_digits,
-                    max_part_length + min_nb_of_digits))):
-        password += true_choice(string.digits)
-        length -= 1
+    if has_digits:
+        for _ in range(true_randint(1, max_part_length)):
+            password += true_choice(string.digits)
+            length -= 1
 
     for _ in range(length):
         password += true_choice(string.ascii_lowercase)
@@ -90,9 +85,4 @@ def true_password(
 
 
 if __name__ == "__main__":
-    print(true_password(
-        length=10,
-        min_nb_of_digits=1,
-        min_nb_of_pct_characters=1,
-        min_nb_of_upc_letters=1
-    ))
+    print(true_password(length=12))

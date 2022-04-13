@@ -3,6 +3,8 @@ import string
 from typing import Any
 import quantumrandom as qtr
 
+GENERATOR = qtr.cached_generator()
+
 
 def true_randint(
     ge: int,
@@ -11,7 +13,7 @@ def true_randint(
     """
         Returns a random integer between <ge> and <le>
     """
-    return int(qtr.randint(min=ge, max=le))
+    return int(qtr.randint(min=ge, max=le, generator=GENERATOR))
 
 
 def true_choice(
@@ -89,8 +91,8 @@ def true_password(
 
 if __name__ == "__main__":
     print(true_password(
-        length=13,
-        min_nb_of_digits=10,
+        length=10,
+        min_nb_of_digits=1,
         min_nb_of_pct_characters=1,
         min_nb_of_upc_letters=1
     ))

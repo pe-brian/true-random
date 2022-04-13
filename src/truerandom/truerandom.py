@@ -11,7 +11,7 @@ def true_randint(
     """
         Returns a random integer between <ge> and <le>
     """
-    return int(qtr.randint(ge, le))
+    return int(qtr.randint(min=ge, max=le))
 
 
 def true_choice(
@@ -51,21 +51,30 @@ def true_password(
     password = ""
 
     assert min_nb_of_pct_characters + min_nb_of_upc_letters \
-        + min_nb_of_digits < length - 1
+        + min_nb_of_digits < length
     max_part_length = (length - 1) // 3
 
     for _ in range(
-            int(true_randint(min_nb_of_pct_characters, max_part_length))):
+            int(
+                true_randint(
+                    min_nb_of_pct_characters,
+                    max_part_length + min_nb_of_pct_characters))):
         password += true_choice(string.punctuation)
         length -= 1
 
     for _ in range(
-            int(true_randint(min_nb_of_upc_letters, max_part_length))):
+            int(
+                true_randint(
+                    min_nb_of_upc_letters,
+                    max_part_length + min_nb_of_upc_letters))):
         password += true_choice(string.ascii_uppercase)
         length -= 1
 
     for _ in range(
-            int(true_randint(min_nb_of_digits, max_part_length))):
+            int(
+                true_randint(
+                    min_nb_of_digits,
+                    max_part_length + min_nb_of_digits))):
         password += true_choice(string.digits)
         length -= 1
 
@@ -79,4 +88,9 @@ def true_password(
 
 
 if __name__ == "__main__":
-    print(true_password())
+    print(true_password(
+        length=13,
+        min_nb_of_digits=10,
+        min_nb_of_pct_characters=1,
+        min_nb_of_upc_letters=1
+    ))

@@ -2,6 +2,7 @@ import string
 from truerandom.truerandom import (
     true_choice,
     true_password,
+    true_passwords,
     true_randint,
     true_shuffle
 )
@@ -154,3 +155,8 @@ def test_true_password_too_short():
         assert False
     except ValueError:
         assert True
+
+
+def test_true_passwords():
+
+    assert len(true_passwords(nb=10)) == 10

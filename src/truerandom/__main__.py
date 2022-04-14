@@ -8,7 +8,7 @@ parser.add_argument('--nb', type=int, default=100,
                     help='number of passwords to generate')
 parser.add_argument('--length', type=int, default=12,
                     help='length of passwords')
-parser.add_argument('--csv', type=str, required=True,
+parser.add_argument('--csv', type=str,
                     help='CSV filepath where to write passwords')
 parser.add_argument('--punctuation', type=bool, default=True,
                     help='Password has punctuation')

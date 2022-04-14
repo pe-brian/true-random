@@ -113,22 +113,23 @@ def true_password(
 
 def true_passwords(
     nb: int,
-    csv_output: str,
+    csv_output: str = None,
     length: int = 10,
     has_punctuation: bool = True,
     has_uppercase_letters: bool = True,
     has_digits: bool = True,
-) -> None:
+) -> List[str] | None:
     """
         Generate a csv file containing <nb> true passwords
     """
     if not isinstance(nb, int):
         raise TypeError("param 'nb' must be an integer")
 
-    if not isinstance(nb, str):
-        raise TypeError("param 'csv_output' must be a str")
+    if csv_output:
+        if not isinstance(nb, str):
+            raise TypeError("param 'csv_output' must be a str")
 
-    if not isinstance(nb, length):
+    if not isinstance(length, int):
         raise TypeError("param 'length' must be an integer")
 
     if not isinstance(has_punctuation, bool):
@@ -147,17 +148,24 @@ def true_passwords(
         raise ValueError(
             "param 'length' must be >= 8")
 
-    with open(csv_output, 'w', newline='', encoding='utf8') as csvfile:
-        writer = csv.writer(
-            csvfile,
-            delimiter=' ',
-            quotechar='|',
-            quoting=csv.QUOTE_MINIMAL
-        )
-        for _ in range(nb):
-            writer.writerow(
-                [
-                    true_password(
-                        length, has_punctuation,
-                        has_uppercase_letters, has_digits
-                    )])
+    if csv_output is not None:
+        with open(csv_output, 'w', newline='', encoding='utf8') as csvfile:
+            writer = csv.writer(
+                csvfile,
+                delimiter=' ',
+                quotechar='|',
+                quoting=csv.QUOTE_MINIMAL
+            )
+            for _ in range(nb):
+                writer.writerow(
+                    [
+                        true_password(
+                            length, has_punctuation,
+                            has_uppercase_letters, has_digits
+                        )])
+    else:
+        return [
+            true_password(
+                length, has_punctuation,
+                has_uppercase_letters, has_digits
+            ) for _ in range(nb)]

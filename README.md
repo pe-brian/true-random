@@ -1,8 +1,10 @@
 # A quantum alternative for standard Python random package
 
 ![GitHub version](https://badge.fury.io/gh/peb-8%2Ftrue-random.svg) ![Licence badge](https://img.shields.io/pypi/l/true-random) ![Python version](https://img.shields.io/pypi/pyversions/true-random)
+[![Actions Status](https://github.com/peb-8/true-random/workflows/Build%20&%20Test/badge.svg)](https://github.com/RobDWaller/csp-generator/actions)
 ![Dependencies](https://img.shields.io/badge/dependencies-quantumrandom-yellowgreen)
 ![Downloads per month](https://img.shields.io/pypi/dm/true-random)
+![Last commit](https://img.shields.io/github/last-commit/peb-8/true-random)
 
 ## Installation : `pip install true-random`
 

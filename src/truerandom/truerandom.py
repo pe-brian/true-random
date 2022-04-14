@@ -5,14 +5,17 @@ from typing import Any
 
 import quantumrandom as qtr
 
-from .utils import check_params
+from .utils import (
+    auto_checks,
+    check_rule
+)
 
 
 GENERATOR = qtr.cached_generator()
 CSV_QUOTE_SEPARATOR = "|"
 
 
-@check_params
+@auto_checks
 def true_randint(
     ge: int,
     le: int
@@ -23,7 +26,7 @@ def true_randint(
     return int(qtr.randint(min=ge, max=le, generator=GENERATOR))
 
 
-@check_params
+@auto_checks
 def true_choice(
     x: List
 ) -> Any:
@@ -33,7 +36,7 @@ def true_choice(
     return x[true_randint(0, len(x) - 1)]
 
 
-@check_params
+@auto_checks
 def true_shuffle(
     x: List
 ) -> None:
@@ -45,7 +48,8 @@ def true_shuffle(
         x[i], x[j] = x[j], x[i]
 
 
-@check_params
+@auto_checks
+@check_rule('length', '>=', 8)
 def true_password(
     length: int = 10,
     has_punctuation: bool = True,
@@ -53,16 +57,12 @@ def true_password(
     has_digits: bool = True
 ) -> str:
     """
-        Generates a random password composed of 'length' character(s) with:
+        Generates a random password with 'length' character(s) with:
         - 0 or more punctuations
         - 0 or more uppercase letters
         - 0 or more digits
         Remaining slots are filled with lowercase letters.
     """
-    if length < 8:
-        raise ValueError(
-            "Param 'length' must be greater or equal to 8.")
-
     password = ""
 
     max_part_length = (length - 1) // (
@@ -95,7 +95,9 @@ def true_password(
     return "".join(password)
 
 
-@check_params
+@auto_checks
+@check_rule('nb', '>', 0)
+@check_rule('length', '>=', 8)
 def true_passwords(
     nb: int,
     csv_output: str = None,
@@ -105,33 +107,22 @@ def true_passwords(
     has_digits: bool = True,
 ) -> List[str] | None:
     """
-        Generate a csv file containing <nb> true passwords
+        Generates a csv file or returns a list containing 'nb' passwords
     """
-    if nb <= 0:
-        raise Exception("param 'nb' must be stricly positive")
-
-    if length < 8:
-        raise ValueError(
-            "Param 'length' must be greater or equal to 8.")
+    passwords = [
+            true_password(
+                length, has_punctuation,
+                has_uppercase_letters, has_digits
+            ) for _ in range(nb)]
 
     if csv_output is not None:
         with open(csv_output, 'w', newline='', encoding='utf8') as csvfile:
             writer = csv.writer(
                 csvfile,
                 delimiter=' ',
-                quotechar='|',
+                quotechar=CSV_QUOTE_SEPARATOR,
                 quoting=csv.QUOTE_MINIMAL
             )
-            for _ in range(nb):
-                writer.writerow(
-                    [
-                        true_password(
-                            length, has_punctuation,
-                            has_uppercase_letters, has_digits
-                        )])
+            writer.writerow(passwords)
     else:
-        return [
-            true_password(
-                length, has_punctuation,
-                has_uppercase_letters, has_digits
-            ) for _ in range(nb)]
+        return passwords

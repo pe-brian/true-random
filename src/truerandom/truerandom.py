@@ -1,54 +1,51 @@
-from typing import List, Tuple
+from typing import List
 import string
 import csv
 from typing import Any
 
 import quantumrandom as qtr
 
+from .utils import check_params
+
+
 GENERATOR = qtr.cached_generator()
 CSV_QUOTE_SEPARATOR = "|"
 
 
+@check_params
 def true_randint(
     ge: int,
     le: int
 ) -> int:
     """
-        Returns a random integer between <ge> and <le>
+        Returns a random integer between ge and le.
     """
-    if not isinstance(ge, int) or not isinstance(le, int):
-        raise TypeError("ge and le must be integers")
-
     return int(qtr.randint(min=ge, max=le, generator=GENERATOR))
 
 
+@check_params
 def true_choice(
-    x: List | Tuple
+    x: List
 ) -> Any:
     """
-        Returns a random item from the list <x>
+        Returns a random item from the list x.
     """
-    if not isinstance(x, List) and not isinstance(x, Tuple) \
-            and not isinstance(x, str):
-        raise TypeError(f"x must be a list or a tuple (instead of {type(x)})")
-
     return x[true_randint(0, len(x) - 1)]
 
 
+@check_params
 def true_shuffle(
     x: List
 ) -> None:
     """
-        Shuffles list <x> in place, and returns None.
+        Shuffles list x in place, and returns None.
     """
-    if not isinstance(x, List):
-        raise TypeError(f"x must be a list (instead of {type(x)})")
-
     for i in reversed(range(1, len(x))):
         j = true_randint(0, i + 1)
         x[i], x[j] = x[j], x[i]
 
 
+@check_params
 def true_password(
     length: int = 10,
     has_punctuation: bool = True,
@@ -56,28 +53,15 @@ def true_password(
     has_digits: bool = True
 ) -> str:
     """
-        Generates a random password composed of <length> character(s) with:
+        Generates a random password composed of 'length' character(s) with:
         - 0 or more punctuations
         - 0 or more uppercase letters
         - 0 or more digits
-        - Remaining slots are filled with lowercase letters.
+        Remaining slots are filled with lowercase letters.
     """
-
-    if not isinstance(length, int):
-        raise TypeError("param 'length' must be an integer")
-
-    if not isinstance(has_punctuation, bool):
-        raise TypeError("param 'has_punctuation' must be a boolean")
-
-    if not isinstance(has_uppercase_letters, bool):
-        raise TypeError("param 'has_uppercase_letters' must be a boolean")
-
-    if not isinstance(has_digits, bool):
-        raise TypeError("param 'has_digits_letters' must be a boolean")
-
     if length < 8:
         raise ValueError(
-            "param 'length' must be >= 8")
+            "Param 'length' must be greater or equal to 8.")
 
     password = ""
 
@@ -111,6 +95,7 @@ def true_password(
     return "".join(password)
 
 
+@check_params
 def true_passwords(
     nb: int,
     csv_output: str = None,
@@ -122,31 +107,12 @@ def true_passwords(
     """
         Generate a csv file containing <nb> true passwords
     """
-    if not isinstance(nb, int):
-        raise TypeError("param 'nb' must be an integer")
-
-    if csv_output:
-        if not isinstance(nb, str):
-            raise TypeError("param 'csv_output' must be a str")
-
-    if not isinstance(length, int):
-        raise TypeError("param 'length' must be an integer")
-
-    if not isinstance(has_punctuation, bool):
-        raise TypeError("param 'has_punctuation' must be a boolean")
-
-    if not isinstance(has_uppercase_letters, bool):
-        raise TypeError("param 'has_uppercase_letters' must be a boolean")
-
-    if not isinstance(has_digits, bool):
-        raise TypeError("param 'has_digits_letters' must be a boolean")
-
     if nb <= 0:
         raise Exception("param 'nb' must be stricly positive")
 
     if length < 8:
         raise ValueError(
-            "param 'length' must be >= 8")
+            "Param 'length' must be greater or equal to 8.")
 
     if csv_output is not None:
         with open(csv_output, 'w', newline='', encoding='utf8') as csvfile:

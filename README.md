@@ -1,4 +1,4 @@
-# A quantum alternative for standard Python random package
+# A quantum alternative for standard Python random package (based on quantumrandom package)
 
 
 ## Installation : `pip install true-random`
@@ -17,8 +17,10 @@ print(true_password(length=12))
 ```
 `output : Jjr1i[h*vtsq`
 
-## Generate a CSV file of strong passwords :
+## Generate a bunch of passwords :
 
 ```
-python -m truerandom --csv=output.csv --length=12 --nb=100
+python -m truerandom --length=12 --nb=100
 ```
+
+You can also provide a 'csv' param to export the output as a csv file, but it is not recommended to store your passwords on a storage (for security reasons).

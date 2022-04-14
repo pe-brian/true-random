@@ -157,6 +157,11 @@ def test_true_password_too_short():
         assert True
 
 
-def test_true_passwords():
+def test_true_passwords_nb():
 
     assert len(true_passwords(nb=10)) == 10
+
+
+def test_true_passwords_length():
+
+    assert len(true_passwords(nb=1, length=8)[0]) == 8

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 import string
 import csv
 from typing import Any
@@ -105,7 +105,7 @@ def true_passwords(
     has_punctuation: bool = True,
     has_uppercase_letters: bool = True,
     has_digits: bool = True,
-) -> List[str] | None:
+) -> Union[List[str], None]:
     """
         Generates a csv file or returns a list containing 'nb' passwords
     """
